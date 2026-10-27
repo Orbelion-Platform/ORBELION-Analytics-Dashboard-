@@ -1,0 +1,54 @@
+[
+  {
+    "path": "shared/demo-data.mjs",
+    "sha256": "e05744b6c03e1acdbf81ee084288a340b63f3325ebdbe4342342e5a5eb992099"
+  },
+  {
+    "path": "shared/demo-currency.mjs",
+    "sha256": "f777c3030d7d661f3b35a36a9f52d7f9d97d157f732dba49db227aa725f8f148"
+  },
+  {
+    "path": "shared/demo-metrics.mjs",
+    "sha256": "97e3597ced63ff78375b1cd7b87f659165ce49f5894fa920bc995b97c4137870"
+  },
+  {
+    "path": "shared/domains/registry.mjs",
+    "sha256": "e730b085661be39f06018203ec5b1020235a7cdb0b0b85f6e695a478a4a2d8b4"
+  },
+  {
+    "path": "shared/finance/provider.mjs",
+    "sha256": "175357459f798b70c322f71c606431fb795d815362f70d10c5d0b15458bbbbfb"
+  },
+  {
+    "path": "shared/finance/registry.mjs",
+    "sha256": "92199b45767d7dc4472d198780a5eb715273001e450c803ff18ec2b3d8231c24"
+  },
+  {
+    "path": "shared/finance/catalog.json",
+    "sha256": "00e505d841c6fdf74de94b57c531fa3904bb1a32d474369e7f728be7c96d4166"
+  },
+  {
+    "path": "shared/finops/provider.mjs",
+    "sha256": "e9824d015c1a09f52fb69dc7b221b960c1c5d37771938ea33138946b5bc49e9c"
+  },
+  {
+    "path": "shared/finops/registry.mjs",
+    "sha256": "552e5a475d89bb585f6604e39bea0a6e69bc787192ece2eb493d77415fe925e4"
+  },
+  {
+    "path": "shared/finops/catalog.json",
+    "sha256": "0a41ff30b2ebbb2f69171231aa4c6b4c5331471b2e313352ebe947faf22c504e"
+  },
+  {
+    "path": "shared/marketing/provider.mjs",
+    "sha256": "44f66317aca6b81d13099274a98694311ccdf1ef104d2f88d7fb3f3593c2de90"
+  },
+  {
+    "path": "shared/marketing/registry.mjs",
+    "sha256": "0db4fefe1c1fd498a0fdd9ec0092fca0174b00937cabc8d2c3d803fad65e39e6"
+  },
+  {
+    "path": "shared/marketing/catalog.json",
+    "sha256": "b709e64eb5e2addedba677ddd49a3174e17ecbb64a51a8dce25ccd37e304d09b"
+  }
+]

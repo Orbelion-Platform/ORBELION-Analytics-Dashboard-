@@ -1,0 +1,2134 @@
+{
+  "schemaVersion": "1.0",
+  "module": "finops",
+  "version": "1.0.0",
+  "liveReady": false,
+  "sources": [
+    {
+      "title": "FinOps Foundation — Allocation",
+      "url": "https://www.finops.org/framework/capabilities/allocation/"
+    },
+    {
+      "title": "FinOps Foundation — Forecasting",
+      "url": "https://www.finops.org/framework/capabilities/forecasting/"
+    },
+    {
+      "title": "FinOps Foundation — Budgeting",
+      "url": "https://www.finops.org/framework/capabilities/budgeting/"
+    }
+  ],
+  "metrics": [
+    {
+      "id": "finops_cloud_cost",
+      "label": "Gasto total cloud",
+      "names": {
+        "es": "Gasto total cloud",
+        "en": "Total cloud spend"
+      },
+      "contract": "finops",
+      "pages": [
+        "overview",
+        "budgets"
+      ],
+      "description": {
+        "es": "Gasto total cloud. Definición conceptual con datos sintéticos; no habilita LIVE. Costo efectivo sintético por recurso y día, en centavos CRC; sin impuestos ni conversión de moneda en el hecho.",
+        "en": "Total cloud spend. Conceptual definition with synthetic data; does not enable LIVE. Synthetic effective cost per resource-day in CRC cents; excludes taxes and in-fact currency conversion."
+      },
+      "formula": "SUM(billing.cost_cents) / 100",
+      "numerator": "SUM(billing.cost_cents)",
+      "denominator": "100",
+      "unit": "CRC",
+      "aggregation": "sum",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "billing",
+          "fields": [
+            "date",
+            "resource_id",
+            "provider",
+            "service",
+            "region",
+            "cost_cents",
+            "unit"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "down",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_budget",
+      "label": "Presupuesto total",
+      "names": {
+        "es": "Presupuesto total",
+        "en": "Total budget"
+      },
+      "contract": "finops",
+      "pages": [
+        "overview",
+        "budgets"
+      ],
+      "description": {
+        "es": "Presupuesto total. Definición conceptual con datos sintéticos; no habilita LIVE. Presupuesto aprobado diario por unidad, sumado una sola vez para el intervalo filtrado; no se replica por recurso.",
+        "en": "Total budget. Conceptual definition with synthetic data; does not enable LIVE. Approved daily budget per business unit, summed once for the filtered interval; never replicated per resource."
+      },
+      "formula": "SUM(budgets.approved_cents) / 100",
+      "numerator": "SUM(budgets.approved_cents)",
+      "denominator": "100",
+      "unit": "CRC",
+      "aggregation": "sum",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "budgets",
+          "fields": [
+            "date",
+            "unit",
+            "approved_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_savings",
+      "label": "Ahorros realizados",
+      "names": {
+        "es": "Ahorros realizados",
+        "en": "Realized savings"
+      },
+      "contract": "finops",
+      "pages": [
+        "overview",
+        "optimization"
+      ],
+      "description": {
+        "es": "Ahorros realizados. Definición conceptual con datos sintéticos; no habilita LIVE. Diferencia frente a una línea base sintética sin optimización para los mismos recursos-día; separada de oportunidades todavía no realizadas.",
+        "en": "Realized savings. Conceptual definition with synthetic data; does not enable LIVE. Difference against a synthetic unoptimized baseline for the same resource-days; separate from unrealized opportunities."
+      },
+      "formula": "SUM(optimization.baseline_cents - billing.cost_cents) / 100",
+      "numerator": "SUM(optimization.baseline_cents - billing.cost_cents)",
+      "denominator": "100",
+      "unit": "CRC",
+      "aggregation": "sum",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "optimization",
+          "fields": [
+            "date",
+            "resource_id",
+            "baseline_cents",
+            "potential_saving_cents",
+            "realized"
+          ]
+        },
+        {
+          "source": "billing",
+          "fields": [
+            "date",
+            "resource_id",
+            "provider",
+            "service",
+            "region",
+            "cost_cents",
+            "unit"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_variance",
+      "label": "Variación presupuestaria",
+      "names": {
+        "es": "Variación presupuestaria",
+        "en": "Budget variance"
+      },
+      "contract": "finops",
+      "pages": [
+        "overview"
+      ],
+      "description": {
+        "es": "Variación presupuestaria. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Budget variance. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "(cloud_cost - budget) / budget × 100",
+      "numerator": "(cloud_cost - budget)",
+      "denominator": "budget",
+      "unit": "percent",
+      "aggregation": "ratio",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "billing",
+          "fields": [
+            "date",
+            "resource_id",
+            "provider",
+            "service",
+            "region",
+            "cost_cents",
+            "unit"
+          ]
+        },
+        {
+          "source": "budgets",
+          "fields": [
+            "date",
+            "unit",
+            "approved_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "finops_cloud_cost",
+        "finops_budget"
+      ],
+      "version": "1.0.0",
+      "preferred": "down",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_forecast",
+      "label": "Forecast de gasto",
+      "names": {
+        "es": "Forecast de gasto",
+        "en": "Spend forecast"
+      },
+      "contract": "finops",
+      "pages": [
+        "overview",
+        "budgets"
+      ],
+      "description": {
+        "es": "Forecast de gasto. Definición conceptual con datos sintéticos; no habilita LIVE. Gasto del intervalo observado dividido entre sus días con datos, proyectado desde el inicio del filtro hasta el fin del mes de la fecha final. No es un forecast estadístico ni un presupuesto aprobado.",
+        "en": "Spend forecast. Conceptual definition with synthetic data; does not enable LIVE. Observed interval spend divided by days with data, projected from filter start through the last date month-end. This is neither a statistical forecast nor an approved budget."
+      },
+      "formula": "cloud_cost × (observed_days + days_until_month_end) / observed_days",
+      "numerator": "cloud_cost × (observed_days + days_until_month_end)",
+      "denominator": "observed_days",
+      "unit": "CRC",
+      "aggregation": "projection",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "billing",
+          "fields": [
+            "date",
+            "resource_id",
+            "provider",
+            "service",
+            "region",
+            "cost_cents",
+            "unit"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "finops_cloud_cost"
+      ],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_monthly_variation",
+      "label": "Variación de gasto mensual",
+      "names": {
+        "es": "Variación de gasto mensual",
+        "en": "Monthly spend change"
+      },
+      "contract": "finops",
+      "pages": [
+        "overview",
+        "costs"
+      ],
+      "description": {
+        "es": "Variación de gasto mensual. Definición conceptual con datos sintéticos; no habilita LIVE. Compara ambos extremos del filtro desplazados un mes calendario, limitando al último día válido; los intervalos pueden tener distinta cantidad de días.",
+        "en": "Monthly spend change. Conceptual definition with synthetic data; does not enable LIVE. Compares both filter endpoints shifted by one calendar month, clamped to valid month-end; intervals may have different day counts."
+      },
+      "formula": "(cloud_cost - prior_calendar_window_cost) / prior_calendar_window_cost × 100",
+      "numerator": "(cloud_cost - prior_calendar_window_cost)",
+      "denominator": "prior_calendar_window_cost",
+      "unit": "percent",
+      "aggregation": "calendar_comparison",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "billing",
+          "fields": [
+            "date",
+            "resource_id",
+            "provider",
+            "service",
+            "region",
+            "cost_cents",
+            "unit"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "finops_cloud_cost"
+      ],
+      "version": "1.0.0",
+      "preferred": "down",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_provider_cost",
+      "label": "Gasto por proveedor",
+      "names": {
+        "es": "Gasto por proveedor",
+        "en": "Spend by provider"
+      },
+      "contract": "finops",
+      "pages": [
+        "costs"
+      ],
+      "description": {
+        "es": "Gasto por proveedor. La tarjeta muestra el mayor grupo; el desglose conserva todos los grupos. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Spend by provider. The card shows the leading group; breakdowns retain every group. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "MAX(GROUP_SUM(cost_cents, provider)) / 100",
+      "numerator": "MAX(GROUP_SUM(cost_cents, provider))",
+      "denominator": "100",
+      "unit": "CRC",
+      "aggregation": "group_max",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "billing",
+          "fields": [
+            "date",
+            "resource_id",
+            "provider",
+            "service",
+            "region",
+            "cost_cents",
+            "unit"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "down",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_service_cost",
+      "label": "Gasto por servicio",
+      "names": {
+        "es": "Gasto por servicio",
+        "en": "Spend by service"
+      },
+      "contract": "finops",
+      "pages": [
+        "costs"
+      ],
+      "description": {
+        "es": "Gasto por servicio. La tarjeta muestra el mayor grupo; el desglose conserva todos los grupos. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Spend by service. The card shows the leading group; breakdowns retain every group. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "MAX(GROUP_SUM(cost_cents, service)) / 100",
+      "numerator": "MAX(GROUP_SUM(cost_cents, service))",
+      "denominator": "100",
+      "unit": "CRC",
+      "aggregation": "group_max",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "billing",
+          "fields": [
+            "date",
+            "resource_id",
+            "provider",
+            "service",
+            "region",
+            "cost_cents",
+            "unit"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "down",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_resource_cost",
+      "label": "Gasto por recurso",
+      "names": {
+        "es": "Gasto por recurso",
+        "en": "Spend by resource"
+      },
+      "contract": "finops",
+      "pages": [
+        "costs"
+      ],
+      "description": {
+        "es": "Gasto por recurso. La tarjeta muestra el mayor grupo; el desglose conserva todos los grupos. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Spend by resource. The card shows the leading group; breakdowns retain every group. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "MAX(GROUP_SUM(cost_cents, resource_id)) / 100",
+      "numerator": "MAX(GROUP_SUM(cost_cents, resource_id))",
+      "denominator": "100",
+      "unit": "CRC",
+      "aggregation": "group_max",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "billing",
+          "fields": [
+            "date",
+            "resource_id",
+            "provider",
+            "service",
+            "region",
+            "cost_cents",
+            "unit"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "down",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_region_cost",
+      "label": "Gasto por región",
+      "names": {
+        "es": "Gasto por región",
+        "en": "Spend by region"
+      },
+      "contract": "finops",
+      "pages": [
+        "costs"
+      ],
+      "description": {
+        "es": "Gasto por región. La tarjeta muestra el mayor grupo; el desglose conserva todos los grupos. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Spend by region. The card shows the leading group; breakdowns retain every group. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "MAX(GROUP_SUM(cost_cents, region)) / 100",
+      "numerator": "MAX(GROUP_SUM(cost_cents, region))",
+      "denominator": "100",
+      "unit": "CRC",
+      "aggregation": "group_max",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "billing",
+          "fields": [
+            "date",
+            "resource_id",
+            "provider",
+            "service",
+            "region",
+            "cost_cents",
+            "unit"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "down",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_avg_resource_cost",
+      "label": "Costo promedio por recurso",
+      "names": {
+        "es": "Costo promedio por recurso",
+        "en": "Average cost per resource"
+      },
+      "contract": "finops",
+      "pages": [
+        "costs"
+      ],
+      "description": {
+        "es": "Costo promedio por recurso. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Average cost per resource. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "cloud_cost / COUNT_DISTINCT(resource_id)",
+      "numerator": "cloud_cost",
+      "denominator": "COUNT_DISTINCT(resource_id)",
+      "unit": "CRC",
+      "aggregation": "ratio",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "billing",
+          "fields": [
+            "date",
+            "resource_id",
+            "provider",
+            "service",
+            "region",
+            "cost_cents",
+            "unit"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "finops_cloud_cost"
+      ],
+      "version": "1.0.0",
+      "preferred": "down",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_cpu",
+      "label": "Utilización promedio de CPU",
+      "names": {
+        "es": "Utilización promedio de CPU",
+        "en": "Average CPU utilization"
+      },
+      "contract": "finops",
+      "pages": [
+        "usage"
+      ],
+      "description": {
+        "es": "Utilización promedio de CPU. Definición conceptual con datos sintéticos; no habilita LIVE. Solo muestras de recursos de cómputo. Ponderación por horas observadas, sin imputar muestras a partir de costos cloud.",
+        "en": "Average CPU utilization. Conceptual definition with synthetic data; does not enable LIVE. Compute-resource samples only. Weighted by observed hours, without imputing observations from cloud cost."
+      },
+      "formula": "SUM(telemetry.cpu_percent × observed_hours) / SUM(observed_hours)",
+      "numerator": "SUM(telemetry.cpu_percent × observed_hours)",
+      "denominator": "SUM(observed_hours)",
+      "unit": "percent",
+      "aggregation": "weighted_mean",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "telemetry",
+          "fields": [
+            "date",
+            "resource_id",
+            "cpu_percent",
+            "memory_percent",
+            "observed_hours",
+            "storage_gb",
+            "egress_gb",
+            "compute_hours",
+            "requests"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_memory",
+      "label": "Utilización promedio de memoria",
+      "names": {
+        "es": "Utilización promedio de memoria",
+        "en": "Average memory utilization"
+      },
+      "contract": "finops",
+      "pages": [
+        "usage"
+      ],
+      "description": {
+        "es": "Utilización promedio de memoria. Definición conceptual con datos sintéticos; no habilita LIVE. Solo muestras de recursos de cómputo. Ponderación por horas observadas; porcentajes diarios nunca se suman.",
+        "en": "Average memory utilization. Conceptual definition with synthetic data; does not enable LIVE. Compute-resource samples only. Weighted by observed hours; daily percentages are never summed."
+      },
+      "formula": "SUM(telemetry.memory_percent × observed_hours) / SUM(observed_hours)",
+      "numerator": "SUM(telemetry.memory_percent × observed_hours)",
+      "denominator": "SUM(observed_hours)",
+      "unit": "percent",
+      "aggregation": "weighted_mean",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "telemetry",
+          "fields": [
+            "date",
+            "resource_id",
+            "cpu_percent",
+            "memory_percent",
+            "observed_hours",
+            "storage_gb",
+            "egress_gb",
+            "compute_hours",
+            "requests"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_storage",
+      "label": "Almacenamiento utilizado",
+      "names": {
+        "es": "Almacenamiento utilizado",
+        "en": "Storage used"
+      },
+      "contract": "finops",
+      "pages": [
+        "usage"
+      ],
+      "description": {
+        "es": "Almacenamiento utilizado. Definición conceptual con datos sintéticos; no habilita LIVE. Suma del último estado observado por recurso de almacenamiento dentro del filtro; no equivale a GB-días.",
+        "en": "Storage used. Conceptual definition with synthetic data; does not enable LIVE. Sum of last observed state per storage resource inside the filter; not GB-days."
+      },
+      "formula": "SUM(LAST_BY_RESOURCE(telemetry.storage_gb))",
+      "numerator": null,
+      "denominator": null,
+      "unit": "GB",
+      "aggregation": "last_snapshot",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "telemetry",
+          "fields": [
+            "date",
+            "resource_id",
+            "cpu_percent",
+            "memory_percent",
+            "observed_hours",
+            "storage_gb",
+            "egress_gb",
+            "compute_hours",
+            "requests"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_egress",
+      "label": "Tráfico de salida",
+      "names": {
+        "es": "Tráfico de salida",
+        "en": "Outbound traffic"
+      },
+      "contract": "finops",
+      "pages": [
+        "usage"
+      ],
+      "description": {
+        "es": "Tráfico de salida. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Outbound traffic. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "SUM(telemetry.egress_gb)",
+      "numerator": null,
+      "denominator": null,
+      "unit": "GB",
+      "aggregation": "sum",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "telemetry",
+          "fields": [
+            "date",
+            "resource_id",
+            "cpu_percent",
+            "memory_percent",
+            "observed_hours",
+            "storage_gb",
+            "egress_gb",
+            "compute_hours",
+            "requests"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_compute_hours",
+      "label": "Horas de cómputo",
+      "names": {
+        "es": "Horas de cómputo",
+        "en": "Compute hours"
+      },
+      "contract": "finops",
+      "pages": [
+        "usage"
+      ],
+      "description": {
+        "es": "Horas de cómputo. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Compute hours. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "SUM(telemetry.compute_hours)",
+      "numerator": null,
+      "denominator": null,
+      "unit": "hours",
+      "aggregation": "sum",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "telemetry",
+          "fields": [
+            "date",
+            "resource_id",
+            "cpu_percent",
+            "memory_percent",
+            "observed_hours",
+            "storage_gb",
+            "egress_gb",
+            "compute_hours",
+            "requests"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_requests",
+      "label": "Solicitudes procesadas",
+      "names": {
+        "es": "Solicitudes procesadas",
+        "en": "Processed requests"
+      },
+      "contract": "finops",
+      "pages": [
+        "usage"
+      ],
+      "description": {
+        "es": "Solicitudes procesadas. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Processed requests. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "SUM(telemetry.requests)",
+      "numerator": null,
+      "denominator": null,
+      "unit": "number",
+      "aggregation": "sum",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "telemetry",
+          "fields": [
+            "date",
+            "resource_id",
+            "cpu_percent",
+            "memory_percent",
+            "observed_hours",
+            "storage_gb",
+            "egress_gb",
+            "compute_hours",
+            "requests"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_remaining",
+      "label": "Presupuesto restante",
+      "names": {
+        "es": "Presupuesto restante",
+        "en": "Remaining budget"
+      },
+      "contract": "finops",
+      "pages": [
+        "budgets"
+      ],
+      "description": {
+        "es": "Presupuesto restante. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Remaining budget. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "budget - cloud_cost",
+      "numerator": null,
+      "denominator": null,
+      "unit": "CRC",
+      "aggregation": "sum",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "billing",
+          "fields": [
+            "date",
+            "resource_id",
+            "provider",
+            "service",
+            "region",
+            "cost_cents",
+            "unit"
+          ]
+        },
+        {
+          "source": "budgets",
+          "fields": [
+            "date",
+            "unit",
+            "approved_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "finops_budget",
+        "finops_cloud_cost"
+      ],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_utilization",
+      "label": "Utilización presupuestaria",
+      "names": {
+        "es": "Utilización presupuestaria",
+        "en": "Budget utilization"
+      },
+      "contract": "finops",
+      "pages": [
+        "budgets"
+      ],
+      "description": {
+        "es": "Utilización presupuestaria. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Budget utilization. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "cloud_cost / budget × 100",
+      "numerator": "cloud_cost",
+      "denominator": "budget",
+      "unit": "percent",
+      "aggregation": "ratio",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "billing",
+          "fields": [
+            "date",
+            "resource_id",
+            "provider",
+            "service",
+            "region",
+            "cost_cents",
+            "unit"
+          ]
+        },
+        {
+          "source": "budgets",
+          "fields": [
+            "date",
+            "unit",
+            "approved_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "finops_cloud_cost",
+        "finops_budget"
+      ],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_overrun",
+      "label": "Exceso presupuestario",
+      "names": {
+        "es": "Exceso presupuestario",
+        "en": "Budget overrun"
+      },
+      "contract": "finops",
+      "pages": [
+        "budgets"
+      ],
+      "description": {
+        "es": "Exceso presupuestario. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Budget overrun. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "MAX(cloud_cost - budget, 0)",
+      "numerator": null,
+      "denominator": null,
+      "unit": "CRC",
+      "aggregation": "recompute",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "billing",
+          "fields": [
+            "date",
+            "resource_id",
+            "provider",
+            "service",
+            "region",
+            "cost_cents",
+            "unit"
+          ]
+        },
+        {
+          "source": "budgets",
+          "fields": [
+            "date",
+            "unit",
+            "approved_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "finops_cloud_cost",
+        "finops_budget"
+      ],
+      "version": "1.0.0",
+      "preferred": "down",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_idle_resources",
+      "label": "Recursos ociosos identificados",
+      "names": {
+        "es": "Recursos ociosos identificados",
+        "en": "Identified idle resources"
+      },
+      "contract": "finops",
+      "pages": [
+        "optimization"
+      ],
+      "description": {
+        "es": "Recursos ociosos identificados. Definición conceptual con datos sintéticos; no habilita LIVE. Recursos de cómputo cuyo último estado tiene CPU < 10% y memoria < 20%. Umbrales DEMO, no recomendaciones productivas.",
+        "en": "Identified idle resources. Conceptual definition with synthetic data; does not enable LIVE. Compute resources with last-state CPU < 10% and memory < 20%. DEMO thresholds, not production recommendations."
+      },
+      "formula": "COUNT_DISTINCT(resource_id WHERE last_cpu < 10 AND last_memory < 20)",
+      "numerator": null,
+      "denominator": null,
+      "unit": "number",
+      "aggregation": "distinct_snapshot",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "telemetry",
+          "fields": [
+            "date",
+            "resource_id",
+            "cpu_percent",
+            "memory_percent",
+            "observed_hours",
+            "storage_gb",
+            "egress_gb",
+            "compute_hours",
+            "requests"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "down",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_idle_cost",
+      "label": "Costo de recursos ociosos",
+      "names": {
+        "es": "Costo de recursos ociosos",
+        "en": "Idle resource cost"
+      },
+      "contract": "finops",
+      "pages": [
+        "optimization"
+      ],
+      "description": {
+        "es": "Costo de recursos ociosos. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Idle resource cost. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "SUM(cost_cents WHERE resource_id IN idle_resources) / 100",
+      "numerator": "SUM(cost_cents WHERE resource_id IN idle_resources)",
+      "denominator": "100",
+      "unit": "CRC",
+      "aggregation": "recompute",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "billing",
+          "fields": [
+            "date",
+            "resource_id",
+            "provider",
+            "service",
+            "region",
+            "cost_cents",
+            "unit"
+          ]
+        },
+        {
+          "source": "telemetry",
+          "fields": [
+            "date",
+            "resource_id",
+            "cpu_percent",
+            "memory_percent",
+            "observed_hours",
+            "storage_gb",
+            "egress_gb",
+            "compute_hours",
+            "requests"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "finops_idle_resources"
+      ],
+      "version": "1.0.0",
+      "preferred": "down",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_saving_opportunities",
+      "label": "Oportunidades de ahorro",
+      "names": {
+        "es": "Oportunidades de ahorro",
+        "en": "Potential savings"
+      },
+      "contract": "finops",
+      "pages": [
+        "optimization"
+      ],
+      "description": {
+        "es": "Oportunidades de ahorro. Definición conceptual con datos sintéticos; no habilita LIVE. Potencial sintético de reducción para recursos no optimizados; 35% del cómputo ocioso y 8% del resto. No es ahorro conseguido ni una recomendación LIVE.",
+        "en": "Potential savings. Conceptual definition with synthetic data; does not enable LIVE. Synthetic reduction potential for unoptimized resources; 35% of idle compute and 8% of the rest. Neither realized savings nor a LIVE recommendation."
+      },
+      "formula": "SUM(potential_saving_cents WHERE realized = false) / 100",
+      "numerator": "SUM(potential_saving_cents WHERE realized = false)",
+      "denominator": "100",
+      "unit": "CRC",
+      "aggregation": "sum",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "optimization",
+          "fields": [
+            "date",
+            "resource_id",
+            "baseline_cents",
+            "potential_saving_cents",
+            "realized"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_optimized_percent",
+      "label": "Recursos optimizados",
+      "names": {
+        "es": "Recursos optimizados",
+        "en": "Optimized resources"
+      },
+      "contract": "finops",
+      "pages": [
+        "optimization"
+      ],
+      "description": {
+        "es": "Recursos optimizados. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Optimized resources. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "COUNT_DISTINCT(optimized_resource_id) / COUNT_DISTINCT(resource_id) × 100",
+      "numerator": "COUNT_DISTINCT(optimized_resource_id)",
+      "denominator": "COUNT_DISTINCT(resource_id)",
+      "unit": "percent",
+      "aggregation": "distinct_ratio",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "optimization",
+          "fields": [
+            "date",
+            "resource_id",
+            "baseline_cents",
+            "potential_saving_cents",
+            "realized"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_reduction_percent",
+      "label": "Reducción de costos",
+      "names": {
+        "es": "Reducción de costos",
+        "en": "Cost reduction"
+      },
+      "contract": "finops",
+      "pages": [
+        "optimization"
+      ],
+      "description": {
+        "es": "Reducción de costos. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Cost reduction. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "savings / (cloud_cost + savings) × 100",
+      "numerator": "savings",
+      "denominator": "(cloud_cost + savings)",
+      "unit": "percent",
+      "aggregation": "ratio",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "optimization",
+          "fields": [
+            "date",
+            "resource_id",
+            "baseline_cents",
+            "potential_saving_cents",
+            "realized"
+          ]
+        },
+        {
+          "source": "billing",
+          "fields": [
+            "date",
+            "resource_id",
+            "provider",
+            "service",
+            "region",
+            "cost_cents",
+            "unit"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "finops_savings",
+        "finops_cloud_cost"
+      ],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_assigned_cost",
+      "label": "Gasto asignado",
+      "names": {
+        "es": "Gasto asignado",
+        "en": "Allocated spend"
+      },
+      "contract": "finops",
+      "pages": [
+        "allocation"
+      ],
+      "description": {
+        "es": "Gasto asignado. Definición conceptual con datos sintéticos; no habilita LIVE. Costo con proyecto y departamento presentes; cliente es siempre el scope autenticado/ficticio actual. Una única fila de costo por recurso-día.",
+        "en": "Allocated spend. Conceptual definition with synthetic data; does not enable LIVE. Cost with both project and department present; client is always the current authenticated/fictional scope. One cost row per resource-day."
+      },
+      "formula": "SUM(cost_cents WHERE project AND department) / 100",
+      "numerator": "SUM(cost_cents WHERE project AND department)",
+      "denominator": "100",
+      "unit": "CRC",
+      "aggregation": "sum",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "allocation",
+          "fields": [
+            "resource_id",
+            "client",
+            "project",
+            "department",
+            "cost_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "down",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_unassigned_cost",
+      "label": "Gasto sin asignar",
+      "names": {
+        "es": "Gasto sin asignar",
+        "en": "Unallocated spend"
+      },
+      "contract": "finops",
+      "pages": [
+        "allocation"
+      ],
+      "description": {
+        "es": "Gasto sin asignar. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Unallocated spend. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "cloud_cost - assigned_cost",
+      "numerator": null,
+      "denominator": null,
+      "unit": "CRC",
+      "aggregation": "sum",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "allocation",
+          "fields": [
+            "resource_id",
+            "client",
+            "project",
+            "department",
+            "cost_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "finops_cloud_cost",
+        "finops_assigned_cost"
+      ],
+      "version": "1.0.0",
+      "preferred": "down",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_allocation_coverage",
+      "label": "Cobertura de asignación",
+      "names": {
+        "es": "Cobertura de asignación",
+        "en": "Allocation coverage"
+      },
+      "contract": "finops",
+      "pages": [
+        "allocation"
+      ],
+      "description": {
+        "es": "Cobertura de asignación. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Allocation coverage. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "assigned_cost / cloud_cost × 100",
+      "numerator": "assigned_cost",
+      "denominator": "cloud_cost",
+      "unit": "percent",
+      "aggregation": "ratio",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "allocation",
+          "fields": [
+            "resource_id",
+            "client",
+            "project",
+            "department",
+            "cost_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "finops_assigned_cost",
+        "finops_cloud_cost"
+      ],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_client_cost",
+      "label": "Gasto por cliente analizado",
+      "names": {
+        "es": "Gasto por cliente analizado",
+        "en": "Spend by analyzed client"
+      },
+      "contract": "finops",
+      "pages": [
+        "allocation"
+      ],
+      "description": {
+        "es": "Gasto por cliente analizado. Definición conceptual con datos sintéticos; no habilita LIVE. Muestra solo el cliente ficticio seleccionado; no accede ni agrega tenants reales.",
+        "en": "Spend by analyzed client. Conceptual definition with synthetic data; does not enable LIVE. Shows only the selected fictional client; does not access or aggregate real tenants."
+      },
+      "formula": "cloud_cost WITH current_client_scope",
+      "numerator": null,
+      "denominator": null,
+      "unit": "CRC",
+      "aggregation": "sum",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "allocation",
+          "fields": [
+            "resource_id",
+            "client",
+            "project",
+            "department",
+            "cost_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "finops_cloud_cost"
+      ],
+      "version": "1.0.0",
+      "preferred": "down",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_project_cost",
+      "label": "Gasto por proyecto",
+      "names": {
+        "es": "Gasto por proyecto",
+        "en": "Spend by project"
+      },
+      "contract": "finops",
+      "pages": [
+        "allocation"
+      ],
+      "description": {
+        "es": "Gasto por proyecto. La tarjeta muestra el mayor grupo; el desglose conserva todos los grupos. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Spend by project. The card shows the leading group; breakdowns retain every group. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "MAX(GROUP_SUM(cost_cents, project)) / 100",
+      "numerator": "MAX(GROUP_SUM(cost_cents, project))",
+      "denominator": "100",
+      "unit": "CRC",
+      "aggregation": "group_max",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "allocation",
+          "fields": [
+            "resource_id",
+            "client",
+            "project",
+            "department",
+            "cost_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "down",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_department_cost",
+      "label": "Gasto por departamento",
+      "names": {
+        "es": "Gasto por departamento",
+        "en": "Spend by department"
+      },
+      "contract": "finops",
+      "pages": [
+        "allocation"
+      ],
+      "description": {
+        "es": "Gasto por departamento. La tarjeta muestra el mayor grupo; el desglose conserva todos los grupos. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Spend by department. The card shows the leading group; breakdowns retain every group. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "MAX(GROUP_SUM(cost_cents, department)) / 100",
+      "numerator": "MAX(GROUP_SUM(cost_cents, department))",
+      "denominator": "100",
+      "unit": "CRC",
+      "aggregation": "group_max",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "allocation",
+          "fields": [
+            "resource_id",
+            "client",
+            "project",
+            "department",
+            "cost_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "down",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "finops_daily_cost",
+      "label": "Costo diario promedio",
+      "names": {
+        "es": "Costo diario promedio",
+        "en": "Average daily cost"
+      },
+      "contract": "finops",
+      "pages": [],
+      "description": {
+        "es": "Costo diario promedio. Definición conceptual con datos sintéticos; no habilita LIVE. Compatibilidad con el endpoint DEMO original de cuatro indicadores. Denominador: días distintos con hechos en el filtro.",
+        "en": "Average daily cost. Conceptual definition with synthetic data; does not enable LIVE. Compatibility with the original four-indicator DEMO endpoint. Denominator: distinct days with facts in the filter."
+      },
+      "formula": "cloud_cost / observed_days",
+      "numerator": "cloud_cost",
+      "denominator": "observed_days",
+      "unit": "CRC",
+      "aggregation": "ratio",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "provider",
+        "service",
+        "resource",
+        "region",
+        "project",
+        "department"
+      ],
+      "requiredFields": [
+        {
+          "source": "billing",
+          "fields": [
+            "date",
+            "resource_id",
+            "provider",
+            "service",
+            "region",
+            "cost_cents",
+            "unit"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "finops_cloud_cost"
+      ],
+      "version": "1.0.0",
+      "preferred": "down",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    }
+  ]
+}

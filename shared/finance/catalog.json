@@ -1,0 +1,306 @@
+{
+  "schemaVersion": "1.0",
+  "metrics": [
+    {
+      "id": "net_sales",
+      "label": "Ventas Netas",
+      "formula": "SUM(fact_ventas[total])",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "cogs",
+      "label": "Costo de Ventas",
+      "formula": "SUM(fact_ventas[costo])",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "gross_profit",
+      "label": "Utilidad Bruta",
+      "formula": "[Ventas Netas] - [Costo de Ventas]",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "gross_margin",
+      "label": "Margen Bruto %",
+      "formula": "DIVIDE([Utilidad Bruta], [Ventas Netas])",
+      "unit": "percent",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "total_expenses",
+      "label": "Gastos Totales",
+      "formula": "SUM(fact_gastos[importe])",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "operating_profit",
+      "label": "Utilidad Operativa",
+      "formula": "[Utilidad Bruta] - [Gastos Totales]",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "inventory_value",
+      "label": "Valor Inventario",
+      "formula": "[Valor costo inventario]",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "avg_ticket",
+      "label": "Ticket Promedio",
+      "formula": "DIVIDE([Ventas Netas], [Transacciones])",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "sales_growth",
+      "label": "Crecimiento Ventas %",
+      "formula": "[Variación Ventas %]",
+      "unit": "percent",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "sold_quantity",
+      "label": "Cantidad Vendida",
+      "formula": "SUM(fact_ventas[cantidad])",
+      "unit": "number",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "active_customers",
+      "label": "Clientes Activos",
+      "formula": "DISTINCTCOUNT(fact_ventas[cliente_key])",
+      "unit": "number",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "sold_products",
+      "label": "Productos Vendidos",
+      "formula": "DISTINCTCOUNT(fact_ventas[producto_key])",
+      "unit": "number",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "avg_sales_customer",
+      "label": "Venta Promedio por Cliente",
+      "formula": "DIVIDE([Ventas Netas], [Clientes Activos])",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "total_discount",
+      "label": "Descuento Total",
+      "formula": "SUM(fact_ventas[descuento])",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "discount_rate",
+      "label": "Descuento %",
+      "formula": "DIVIDE([Descuento Total], SUM(fact_ventas[subtotal]))",
+      "unit": "percent",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "avg_price",
+      "label": "Precio Promedio",
+      "formula": "DIVIDE(SUM(fact_ventas[subtotal]), [Cantidad Vendida])",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "transactions",
+      "label": "Transacciones",
+      "formula": "DISTINCTCOUNT(fact_ventas[venta_id])",
+      "unit": "number",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "avg_expense",
+      "label": "Gasto Promedio",
+      "formula": "DIVIDE([Gastos Totales], DISTINCTCOUNT(fact_gastos[gasto_id]))",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "expense_sales_ratio",
+      "label": "% Gastos sobre Ventas",
+      "formula": "DIVIDE([Gastos Totales], [Ventas Netas])",
+      "unit": "percent",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "total_purchases",
+      "label": "Compras Totales",
+      "formula": "CALCULATE(SUM(fact_compras[importe]), TREATAS(VALUES(dim_fecha[fecha_key]), fact_compras[fecha_key]))",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "purchased_quantity",
+      "label": "Cantidad Comprada",
+      "formula": "CALCULATE(SUM(fact_compras[cantidad]), TREATAS(VALUES(dim_fecha[fecha_key]), fact_compras[fecha_key]))",
+      "unit": "number",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "avg_purchase",
+      "label": "Compra Promedio",
+      "formula": "DIVIDE([Compras Totales], CALCULATE(DISTINCTCOUNT(fact_compras[compra_id]), TREATAS(VALUES(dim_fecha[fecha_key]), fact_compras[fecha_key])))",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "avg_unit_cost",
+      "label": "Costo Unitario Promedio",
+      "formula": "DIVIDE([Compras Totales], [Cantidad Comprada])",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "active_suppliers",
+      "label": "Proveedores Activos",
+      "formula": "CALCULATE(DISTINCTCOUNT(fact_compras[proveedor_key]), TREATAS(VALUES(dim_fecha[fecha_key]), fact_compras[fecha_key]))",
+      "unit": "number",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "purchased_products",
+      "label": "Productos Comprados",
+      "formula": "CALCULATE(DISTINCTCOUNT(fact_compras[producto_key]), TREATAS(VALUES(dim_fecha[fecha_key]), fact_compras[fecha_key]))",
+      "unit": "number",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "moved_quantity",
+      "label": "Cantidad Movida",
+      "formula": "SUMX(fact_inventario, ABS(fact_inventario[cantidad]))",
+      "unit": "number",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "avg_inventory_cost",
+      "label": "Costo Unitario Promedio Inventario",
+      "formula": "DIVIDE([Valor costo inventario], [Existencia Actual])",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "sales_prev_month",
+      "label": "Ventas Mes Anterior",
+      "formula": "CALCULATE([Ventas Netas], DATEADD(dim_fecha[fecha], -1, MONTH))",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "sales_prev_year",
+      "label": "Ventas Año Anterior",
+      "formula": "CALCULATE([Ventas Netas], SAMEPERIODLASTYEAR(dim_fecha[fecha]))",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "sales_mtd",
+      "label": "Ventas MTD",
+      "formula": "TOTALMTD([Ventas Netas], dim_fecha[fecha])",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "sales_ytd",
+      "label": "Ventas YTD",
+      "formula": "TOTALYTD([Ventas Netas], dim_fecha[fecha])",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "sales_change",
+      "label": "Variación Ventas %",
+      "formula": "DIVIDE([Ventas Netas] - [Ventas Mes Anterior], [Ventas Mes Anterior])",
+      "unit": "percent",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "expenses_prev_month",
+      "label": "Gastos Mes Anterior",
+      "formula": "CALCULATE([Gastos Totales], DATEADD(dim_fecha[fecha], -1, MONTH))",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "expenses_change",
+      "label": "Variación Gastos %",
+      "formula": "DIVIDE([Gastos Totales] - [Gastos Mes Anterior], [Gastos Mes Anterior])",
+      "unit": "percent",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "purchases_prev_month",
+      "label": "Compras Mes Anterior",
+      "formula": "CALCULATE([Compras Totales], DATEADD(dim_fecha[fecha], -1, MONTH))",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "purchases_change",
+      "label": "Variación Compras %",
+      "formula": "DIVIDE([Compras Totales] - [Compras Mes Anterior], [Compras Mes Anterior])",
+      "unit": "percent",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "current_stock",
+      "label": "Existencia Actual",
+      "formula": "CALCULATE(SUM(vw_inventario_actual[cantidad_actual]), TREATAS(VALUES(dim_producto_servicio[producto_key]), vw_inventario_actual[producto_key]), TREATAS(VALUES(dim_fecha[fecha_key]), vw_inventario_actual[fecha_key]))",
+      "unit": "number",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "operating_in",
+      "label": "Entradas Operativas",
+      "formula": "CALCULATE(SUM(fact_inventario[cantidad_entrada]), KEEPFILTERS(fact_inventario[es_movimiento_operativo] = TRUE()))",
+      "unit": "number",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "operating_out",
+      "label": "Salidas Operativas",
+      "formula": "CALCULATE(SUM(fact_inventario[cantidad_salida]), KEEPFILTERS(fact_inventario[es_movimiento_operativo] = TRUE()))",
+      "unit": "number",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "inventory_cost",
+      "label": "Valor costo inventario",
+      "formula": "CALCULATE(SUM(vw_inventario_actual[valor_costo]), TREATAS(VALUES(dim_producto_servicio[producto_key]), vw_inventario_actual[producto_key]), TREATAS(VALUES(dim_fecha[fecha_key]), vw_inventario_actual[fecha_key]))",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "inventory_sale",
+      "label": "Valor venta inventario",
+      "formula": "CALCULATE(SUM(vw_inventario_actual[valor_venta_potencial]), TREATAS(VALUES(dim_producto_servicio[producto_key]), vw_inventario_actual[producto_key]), TREATAS(VALUES(dim_fecha[fecha_key]), vw_inventario_actual[fecha_key]))",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "inventory_cost_history",
+      "label": "Valor costo inventario histórico",
+      "formula": "CALCULATE(SUM(fact_inventario_snapshot[valor_costo]), TREATAS(VALUES(dim_producto_servicio[producto_key]), fact_inventario_snapshot[producto_key]), TREATAS(VALUES(dim_fecha[fecha_key]), fact_inventario_snapshot[fecha_key]))",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    },
+    {
+      "id": "inventory_sale_history",
+      "label": "Valor venta inventario histórico",
+      "formula": "CALCULATE(SUM(fact_inventario_snapshot[valor_venta_potencial]), TREATAS(VALUES(dim_producto_servicio[producto_key]), fact_inventario_snapshot[producto_key]), TREATAS(VALUES(dim_fecha[fecha_key]), fact_inventario_snapshot[fecha_key]))",
+      "unit": "USD",
+      "status": "VERIFIED_SOURCE"
+    }
+  ]
+}

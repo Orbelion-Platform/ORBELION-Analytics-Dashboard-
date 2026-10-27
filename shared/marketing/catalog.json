@@ -1,0 +1,2563 @@
+{
+  "schemaVersion": "1.0",
+  "module": "marketing",
+  "version": "1.0.0",
+  "liveReady": false,
+  "sources": [
+    {
+      "title": "Google Analytics — Engagement rate",
+      "url": "https://support.google.com/analytics/answer/12195621"
+    },
+    {
+      "title": "Meta Marketing API — Insights",
+      "url": "https://developers.facebook.com/docs/marketing-api/insights/"
+    }
+  ],
+  "metrics": [
+    {
+      "id": "marketing_investment",
+      "label": "Inversión publicitaria",
+      "names": {
+        "es": "Inversión publicitaria",
+        "en": "Advertising spend"
+      },
+      "contract": "marketing",
+      "pages": [
+        "overview",
+        "campaigns"
+      ],
+      "description": {
+        "es": "Inversión publicitaria. Definición conceptual con datos sintéticos; no habilita LIVE. Gasto sintético de campañas Google Ads y Meta Ads. La identidad de las plataformas es demostrativa; no hay consultas a sus APIs.",
+        "en": "Advertising spend. Conceptual definition with synthetic data; does not enable LIVE. Synthetic Google Ads and Meta Ads campaign spend. Platform identity is demonstrative; their APIs are not queried."
+      },
+      "formula": "SUM(ads.spend_cents) / 100",
+      "numerator": "SUM(ads.spend_cents)",
+      "denominator": "100",
+      "unit": "CRC",
+      "aggregation": "sum",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "ads",
+          "fields": [
+            "date",
+            "campaign_id",
+            "platform",
+            "spend_cents",
+            "impressions",
+            "person_id",
+            "clicks",
+            "conversions",
+            "attributed_revenue_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_attributed_revenue",
+      "label": "Ingresos atribuidos",
+      "names": {
+        "es": "Ingresos atribuidos",
+        "en": "Attributed revenue"
+      },
+      "contract": "marketing",
+      "pages": [
+        "overview",
+        "conversions"
+      ],
+      "description": {
+        "es": "Ingresos atribuidos. Definición conceptual con datos sintéticos; no habilita LIVE. Cada conversión sintética tiene un identificador de lote/campaña y un único contacto el mismo día, dentro de 7 días. Se atribuyen 3500 centavos CRC por conversión. No equivale a ventas registradas en Finanzas.",
+        "en": "Attributed revenue. Conceptual definition with synthetic data; does not enable LIVE. Each synthetic conversion has a campaign/batch identifier and one same-day touch within 7 days. Attributed revenue is 3500 CRC cents per conversion. Not equivalent to Finance ledger sales."
+      },
+      "formula": "SUM(ads.attributed_revenue_cents) / 100",
+      "numerator": "SUM(ads.attributed_revenue_cents)",
+      "denominator": "100",
+      "unit": "CRC",
+      "aggregation": "sum",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "ads",
+          "fields": [
+            "date",
+            "campaign_id",
+            "platform",
+            "spend_cents",
+            "impressions",
+            "person_id",
+            "clicks",
+            "conversions",
+            "attributed_revenue_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_roas",
+      "label": "ROAS",
+      "names": {
+        "es": "ROAS",
+        "en": "ROAS"
+      },
+      "contract": "marketing",
+      "pages": [
+        "overview",
+        "conversions"
+      ],
+      "description": {
+        "es": "ROAS. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "ROAS. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "attributed_revenue / investment",
+      "numerator": "attributed_revenue",
+      "denominator": "investment",
+      "unit": "ratio",
+      "aggregation": "ratio",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "ads",
+          "fields": [
+            "date",
+            "campaign_id",
+            "platform",
+            "spend_cents",
+            "impressions",
+            "person_id",
+            "clicks",
+            "conversions",
+            "attributed_revenue_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "marketing_attributed_revenue",
+        "marketing_investment"
+      ],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_conversions",
+      "label": "Conversiones publicitarias",
+      "names": {
+        "es": "Conversiones publicitarias",
+        "en": "Ad conversions"
+      },
+      "contract": "marketing",
+      "pages": [
+        "overview"
+      ],
+      "description": {
+        "es": "Conversiones publicitarias. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Ad conversions. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "SUM(ads.conversions)",
+      "numerator": null,
+      "denominator": null,
+      "unit": "number",
+      "aggregation": "sum",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "ads",
+          "fields": [
+            "date",
+            "campaign_id",
+            "platform",
+            "spend_cents",
+            "impressions",
+            "person_id",
+            "clicks",
+            "conversions",
+            "attributed_revenue_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_leads",
+      "label": "Leads generados",
+      "names": {
+        "es": "Leads generados",
+        "en": "Generated leads"
+      },
+      "contract": "marketing",
+      "pages": [
+        "overview",
+        "leads"
+      ],
+      "description": {
+        "es": "Leads generados. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Generated leads. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "COUNT_DISTINCT(crm.lead_id)",
+      "numerator": null,
+      "denominator": null,
+      "unit": "number",
+      "aggregation": "distinct",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "crm",
+          "fields": [
+            "lead_id",
+            "campaign_id",
+            "created_at",
+            "qualified_at",
+            "opportunity_id",
+            "opened_at",
+            "won_at",
+            "closed_at",
+            "value_cents",
+            "acquisition_operations_cost",
+            "new_acquired_customers"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_cac",
+      "label": "Costo de adquisición de clientes",
+      "names": {
+        "es": "Costo de adquisición de clientes",
+        "en": "Customer acquisition cost"
+      },
+      "contract": "marketing",
+      "pages": [
+        "overview",
+        "conversions"
+      ],
+      "description": {
+        "es": "Costo de adquisición de clientes. Definición conceptual con datos sintéticos; no habilita LIVE. Cohorte de leads creados dentro del filtro: publicidad más operación de adquisición (25 centavos CRC por lead), dividida entre clientes nuevos adquiridos al cierre. En DEMO cada negocio ganado de esa cohorte identifica un cliente nuevo distinto.",
+        "en": "Customer acquisition cost. Conceptual definition with synthetic data; does not enable LIVE. Cohort of leads created in the filter: advertising plus acquisition operations (25 CRC cents per lead), divided by new customers acquired by cutoff. In DEMO each won deal in this cohort identifies a distinct new customer."
+      },
+      "formula": "(investment + acquisition_operations_cost) / new_acquired_customers",
+      "numerator": "(investment + acquisition_operations_cost)",
+      "denominator": "new_acquired_customers",
+      "unit": "CRC",
+      "aggregation": "cohort_ratio",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "ads",
+          "fields": [
+            "date",
+            "campaign_id",
+            "platform",
+            "spend_cents",
+            "impressions",
+            "person_id",
+            "clicks",
+            "conversions",
+            "attributed_revenue_cents"
+          ]
+        },
+        {
+          "source": "crm",
+          "fields": [
+            "lead_id",
+            "campaign_id",
+            "created_at",
+            "qualified_at",
+            "opportunity_id",
+            "opened_at",
+            "won_at",
+            "closed_at",
+            "value_cents",
+            "acquisition_operations_cost",
+            "new_acquired_customers"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "marketing_investment"
+      ],
+      "version": "1.0.0",
+      "preferred": "down",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_users",
+      "label": "Usuarios",
+      "names": {
+        "es": "Usuarios",
+        "en": "Users"
+      },
+      "contract": "marketing",
+      "pages": [
+        "traffic"
+      ],
+      "description": {
+        "es": "Usuarios. Definición conceptual con datos sintéticos; no habilita LIVE. Personas sintéticas identificadas por client/unidad/user_id, deduplicadas en cada intervalo. El registro first_seen existe independientemente del filtro.",
+        "en": "Users. Conceptual definition with synthetic data; does not enable LIVE. Synthetic people identified by client/unit/user_id, deduplicated in each interval. The first_seen registry exists independently of the filter."
+      },
+      "formula": "COUNT_DISTINCT(analytics.user_id)",
+      "numerator": null,
+      "denominator": null,
+      "unit": "number",
+      "aggregation": "distinct",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "analytics",
+          "fields": [
+            "date",
+            "user_id",
+            "first_seen",
+            "sessions",
+            "engaged_sessions",
+            "sessions_with_key_event",
+            "key_events",
+            "channel",
+            "device",
+            "country",
+            "content"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_sessions",
+      "label": "Sesiones",
+      "names": {
+        "es": "Sesiones",
+        "en": "Sessions"
+      },
+      "contract": "marketing",
+      "pages": [
+        "traffic"
+      ],
+      "description": {
+        "es": "Sesiones. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Sessions. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "SUM(analytics.sessions)",
+      "numerator": null,
+      "denominator": null,
+      "unit": "number",
+      "aggregation": "sum",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "analytics",
+          "fields": [
+            "date",
+            "user_id",
+            "first_seen",
+            "sessions",
+            "engaged_sessions",
+            "sessions_with_key_event",
+            "key_events",
+            "channel",
+            "device",
+            "country",
+            "content"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_engaged_sessions",
+      "label": "Sesiones con interacción",
+      "names": {
+        "es": "Sesiones con interacción",
+        "en": "Engaged sessions"
+      },
+      "contract": "marketing",
+      "pages": [
+        "traffic"
+      ],
+      "description": {
+        "es": "Sesiones con interacción. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Engaged sessions. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "SUM(analytics.engaged_sessions)",
+      "numerator": null,
+      "denominator": null,
+      "unit": "number",
+      "aggregation": "sum",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "analytics",
+          "fields": [
+            "date",
+            "user_id",
+            "first_seen",
+            "sessions",
+            "engaged_sessions",
+            "sessions_with_key_event",
+            "key_events",
+            "channel",
+            "device",
+            "country",
+            "content"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_engagement_rate",
+      "label": "Tasa de interacción",
+      "names": {
+        "es": "Tasa de interacción",
+        "en": "Engagement rate"
+      },
+      "contract": "marketing",
+      "pages": [
+        "traffic"
+      ],
+      "description": {
+        "es": "Tasa de interacción. Definición conceptual con datos sintéticos; no habilita LIVE. Sesiones con interacción / sesiones × 100. En GA4 la interacción requiere más de 10 segundos, un evento clave o al menos dos vistas; en DEMO se proporcionan contadores sintéticos.",
+        "en": "Engagement rate. Conceptual definition with synthetic data; does not enable LIVE. Engaged sessions / sessions × 100. GA4 engagement requires over 10 seconds, a key event or at least two views; DEMO supplies synthetic counters."
+      },
+      "formula": "engaged_sessions / sessions × 100",
+      "numerator": "engaged_sessions",
+      "denominator": "sessions",
+      "unit": "percent",
+      "aggregation": "ratio",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "analytics",
+          "fields": [
+            "date",
+            "user_id",
+            "first_seen",
+            "sessions",
+            "engaged_sessions",
+            "sessions_with_key_event",
+            "key_events",
+            "channel",
+            "device",
+            "country",
+            "content"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "marketing_engaged_sessions",
+        "marketing_sessions"
+      ],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_organic_sessions",
+      "label": "Sesiones orgánicas",
+      "names": {
+        "es": "Sesiones orgánicas",
+        "en": "Organic sessions"
+      },
+      "contract": "marketing",
+      "pages": [
+        "traffic"
+      ],
+      "description": {
+        "es": "Sesiones orgánicas. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Organic sessions. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "SUM(sessions WHERE channel = organic)",
+      "numerator": null,
+      "denominator": null,
+      "unit": "number",
+      "aggregation": "sum",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "analytics",
+          "fields": [
+            "date",
+            "user_id",
+            "first_seen",
+            "sessions",
+            "engaged_sessions",
+            "sessions_with_key_event",
+            "key_events",
+            "channel",
+            "device",
+            "country",
+            "content"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_traffic_conversion_rate",
+      "label": "Tasa de conversión del tráfico",
+      "names": {
+        "es": "Tasa de conversión del tráfico",
+        "en": "Traffic conversion rate"
+      },
+      "contract": "marketing",
+      "pages": [
+        "traffic"
+      ],
+      "description": {
+        "es": "Tasa de conversión del tráfico. Definición conceptual con datos sintéticos; no habilita LIVE. Porcentaje de sesiones GA4 que contienen al menos un evento clave, no eventos por sesión ni conversiones publicitarias por clic.",
+        "en": "Traffic conversion rate. Conceptual definition with synthetic data; does not enable LIVE. Percentage of GA4 sessions with at least one key event, not events per session or ad conversions per click."
+      },
+      "formula": "SUM(sessions_with_key_event) / sessions × 100",
+      "numerator": "SUM(sessions_with_key_event)",
+      "denominator": "sessions",
+      "unit": "percent",
+      "aggregation": "ratio",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "analytics",
+          "fields": [
+            "date",
+            "user_id",
+            "first_seen",
+            "sessions",
+            "engaged_sessions",
+            "sessions_with_key_event",
+            "key_events",
+            "channel",
+            "device",
+            "country",
+            "content"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "marketing_sessions"
+      ],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_impressions",
+      "label": "Impresiones",
+      "names": {
+        "es": "Impresiones",
+        "en": "Impressions"
+      },
+      "contract": "marketing",
+      "pages": [
+        "campaigns"
+      ],
+      "description": {
+        "es": "Impresiones. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Impressions. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "SUM(ads.impressions)",
+      "numerator": null,
+      "denominator": null,
+      "unit": "number",
+      "aggregation": "sum",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "ads",
+          "fields": [
+            "date",
+            "campaign_id",
+            "platform",
+            "spend_cents",
+            "impressions",
+            "person_id",
+            "clicks",
+            "conversions",
+            "attributed_revenue_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_reach",
+      "label": "Alcance",
+      "names": {
+        "es": "Alcance",
+        "en": "Reach"
+      },
+      "contract": "marketing",
+      "pages": [
+        "campaigns"
+      ],
+      "description": {
+        "es": "Alcance. Definición conceptual con datos sintéticos; no habilita LIVE. Personas publicitarias distintas usando una identidad común exclusivamente sintética. La deduplicación entre plataformas exige validar identidad y cobertura en LIVE.",
+        "en": "Reach. Conceptual definition with synthetic data; does not enable LIVE. Distinct advertising people using an exclusively synthetic common identity. Cross-platform deduplication requires verified identity and coverage in LIVE."
+      },
+      "formula": "COUNT_DISTINCT(ads.person_id)",
+      "numerator": null,
+      "denominator": null,
+      "unit": "number",
+      "aggregation": "distinct",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "ads",
+          "fields": [
+            "date",
+            "campaign_id",
+            "platform",
+            "spend_cents",
+            "impressions",
+            "person_id",
+            "clicks",
+            "conversions",
+            "attributed_revenue_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_clicks",
+      "label": "Clics",
+      "names": {
+        "es": "Clics",
+        "en": "Clicks"
+      },
+      "contract": "marketing",
+      "pages": [
+        "campaigns"
+      ],
+      "description": {
+        "es": "Clics. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Clicks. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "SUM(ads.clicks)",
+      "numerator": null,
+      "denominator": null,
+      "unit": "number",
+      "aggregation": "sum",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "ads",
+          "fields": [
+            "date",
+            "campaign_id",
+            "platform",
+            "spend_cents",
+            "impressions",
+            "person_id",
+            "clicks",
+            "conversions",
+            "attributed_revenue_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_ctr",
+      "label": "CTR",
+      "names": {
+        "es": "CTR",
+        "en": "CTR"
+      },
+      "contract": "marketing",
+      "pages": [
+        "campaigns"
+      ],
+      "description": {
+        "es": "CTR. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "CTR. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "clicks / impressions × 100",
+      "numerator": "clicks",
+      "denominator": "impressions",
+      "unit": "percent",
+      "aggregation": "ratio",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "ads",
+          "fields": [
+            "date",
+            "campaign_id",
+            "platform",
+            "spend_cents",
+            "impressions",
+            "person_id",
+            "clicks",
+            "conversions",
+            "attributed_revenue_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "marketing_clicks",
+        "marketing_impressions"
+      ],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_cpc",
+      "label": "CPC",
+      "names": {
+        "es": "CPC",
+        "en": "CPC"
+      },
+      "contract": "marketing",
+      "pages": [
+        "campaigns"
+      ],
+      "description": {
+        "es": "CPC. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "CPC. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "investment / clicks",
+      "numerator": "investment",
+      "denominator": "clicks",
+      "unit": "CRC",
+      "aggregation": "ratio",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "ads",
+          "fields": [
+            "date",
+            "campaign_id",
+            "platform",
+            "spend_cents",
+            "impressions",
+            "person_id",
+            "clicks",
+            "conversions",
+            "attributed_revenue_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "marketing_investment",
+        "marketing_clicks"
+      ],
+      "version": "1.0.0",
+      "preferred": "down",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_cpm",
+      "label": "CPM",
+      "names": {
+        "es": "CPM",
+        "en": "CPM"
+      },
+      "contract": "marketing",
+      "pages": [
+        "campaigns"
+      ],
+      "description": {
+        "es": "CPM. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "CPM. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "investment / impressions × 1000",
+      "numerator": "investment",
+      "denominator": "impressions",
+      "unit": "CRC",
+      "aggregation": "ratio",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "ads",
+          "fields": [
+            "date",
+            "campaign_id",
+            "platform",
+            "spend_cents",
+            "impressions",
+            "person_id",
+            "clicks",
+            "conversions",
+            "attributed_revenue_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "marketing_investment",
+        "marketing_impressions"
+      ],
+      "version": "1.0.0",
+      "preferred": "down",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_cpl",
+      "label": "Costo por lead atribuible",
+      "names": {
+        "es": "Costo por lead atribuible",
+        "en": "Cost per attributable lead"
+      },
+      "contract": "marketing",
+      "pages": [
+        "leads"
+      ],
+      "description": {
+        "es": "Costo por lead atribuible. Definición conceptual con datos sintéticos; no habilita LIVE. Solo leads de la cohorte con vínculo único atribuible a una campaña de pago; no usa oportunidades, clics ni todos los leads como denominador.",
+        "en": "Cost per attributable lead. Conceptual definition with synthetic data; does not enable LIVE. Only cohort leads with a unique attributable paid-campaign link; denominator is not opportunities, clicks or all leads."
+      },
+      "formula": "investment / attributable_leads",
+      "numerator": "investment",
+      "denominator": "attributable_leads",
+      "unit": "CRC",
+      "aggregation": "cohort_ratio",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "ads",
+          "fields": [
+            "date",
+            "campaign_id",
+            "platform",
+            "spend_cents",
+            "impressions",
+            "person_id",
+            "clicks",
+            "conversions",
+            "attributed_revenue_cents"
+          ]
+        },
+        {
+          "source": "crm",
+          "fields": [
+            "lead_id",
+            "campaign_id",
+            "created_at",
+            "qualified_at",
+            "opportunity_id",
+            "opened_at",
+            "won_at",
+            "closed_at",
+            "value_cents",
+            "acquisition_operations_cost",
+            "new_acquired_customers"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "marketing_investment"
+      ],
+      "version": "1.0.0",
+      "preferred": "down",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_qualified_leads",
+      "label": "Leads calificados",
+      "names": {
+        "es": "Leads calificados",
+        "en": "Qualified leads"
+      },
+      "contract": "marketing",
+      "pages": [
+        "leads"
+      ],
+      "description": {
+        "es": "Leads calificados. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Qualified leads. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "COUNT_DISTINCT(lead_id WHERE qualified_at <= cutoff)",
+      "numerator": null,
+      "denominator": null,
+      "unit": "number",
+      "aggregation": "distinct",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "crm",
+          "fields": [
+            "lead_id",
+            "campaign_id",
+            "created_at",
+            "qualified_at",
+            "opportunity_id",
+            "opened_at",
+            "won_at",
+            "closed_at",
+            "value_cents",
+            "acquisition_operations_cost",
+            "new_acquired_customers"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_opportunities",
+      "label": "Oportunidades comerciales",
+      "names": {
+        "es": "Oportunidades comerciales",
+        "en": "Sales opportunities"
+      },
+      "contract": "marketing",
+      "pages": [
+        "leads"
+      ],
+      "description": {
+        "es": "Oportunidades comerciales. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Sales opportunities. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "COUNT_DISTINCT(opportunity_id WHERE opened_at <= cutoff)",
+      "numerator": null,
+      "denominator": null,
+      "unit": "number",
+      "aggregation": "distinct",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "crm",
+          "fields": [
+            "lead_id",
+            "campaign_id",
+            "created_at",
+            "qualified_at",
+            "opportunity_id",
+            "opened_at",
+            "won_at",
+            "closed_at",
+            "value_cents",
+            "acquisition_operations_cost",
+            "new_acquired_customers"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_lead_opportunity_rate",
+      "label": "Conversión de lead a oportunidad",
+      "names": {
+        "es": "Conversión de lead a oportunidad",
+        "en": "Lead to opportunity rate"
+      },
+      "contract": "marketing",
+      "pages": [
+        "leads"
+      ],
+      "description": {
+        "es": "Conversión de lead a oportunidad. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Lead to opportunity rate. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "opportunities / leads × 100",
+      "numerator": "opportunities",
+      "denominator": "leads",
+      "unit": "percent",
+      "aggregation": "cohort_ratio",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "crm",
+          "fields": [
+            "lead_id",
+            "campaign_id",
+            "created_at",
+            "qualified_at",
+            "opportunity_id",
+            "opened_at",
+            "won_at",
+            "closed_at",
+            "value_cents",
+            "acquisition_operations_cost",
+            "new_acquired_customers"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "marketing_opportunities",
+        "marketing_leads"
+      ],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_won_deals",
+      "label": "Negocios ganados",
+      "names": {
+        "es": "Negocios ganados",
+        "en": "Won deals"
+      },
+      "contract": "marketing",
+      "pages": [
+        "leads"
+      ],
+      "description": {
+        "es": "Negocios ganados. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Won deals. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "COUNT_DISTINCT(opportunity_id WHERE won_at <= cutoff)",
+      "numerator": null,
+      "denominator": null,
+      "unit": "number",
+      "aggregation": "distinct",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "crm",
+          "fields": [
+            "lead_id",
+            "campaign_id",
+            "created_at",
+            "qualified_at",
+            "opportunity_id",
+            "opened_at",
+            "won_at",
+            "closed_at",
+            "value_cents",
+            "acquisition_operations_cost",
+            "new_acquired_customers"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_pipeline_value",
+      "label": "Valor del pipeline",
+      "names": {
+        "es": "Valor del pipeline",
+        "en": "Pipeline value"
+      },
+      "contract": "marketing",
+      "pages": [
+        "leads"
+      ],
+      "description": {
+        "es": "Valor del pipeline. Definición conceptual con datos sintéticos; no habilita LIVE. Valor sin ponderar de oportunidades abiertas al cierre, de leads creados dentro del filtro. La evolución recalcula el estado de esa cohorte en cada fecha. No suma snapshots diarios.",
+        "en": "Pipeline value. Conceptual definition with synthetic data; does not enable LIVE. Unweighted value of opportunities open at cutoff, from leads created within the filter. The trend recomputes cohort state at each date. Daily snapshots are not summed."
+      },
+      "formula": "SUM(open_opportunity_value_at_cutoff) / 100",
+      "numerator": "SUM(open_opportunity_value_at_cutoff)",
+      "denominator": "100",
+      "unit": "CRC",
+      "aggregation": "last_snapshot",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "crm",
+          "fields": [
+            "lead_id",
+            "campaign_id",
+            "created_at",
+            "qualified_at",
+            "opportunity_id",
+            "opened_at",
+            "won_at",
+            "closed_at",
+            "value_cents",
+            "acquisition_operations_cost",
+            "new_acquired_customers"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_win_rate",
+      "label": "Tasa de cierre",
+      "names": {
+        "es": "Tasa de cierre",
+        "en": "Win rate"
+      },
+      "contract": "marketing",
+      "pages": [
+        "leads"
+      ],
+      "description": {
+        "es": "Tasa de cierre. Definición conceptual con datos sintéticos; no habilita LIVE. Negocios ganados / oportunidades cerradas (ganadas + perdidas) al cierre del filtro, para la cohorte de leads creada en el período. Se presenta en porcentaje.",
+        "en": "Win rate. Conceptual definition with synthetic data; does not enable LIVE. Won deals / closed opportunities (won + lost) at filter end, for the lead cohort created in the period. Displayed as a percentage."
+      },
+      "formula": "won_deals / closed_opportunities × 100",
+      "numerator": "won_deals",
+      "denominator": "closed_opportunities",
+      "unit": "percent",
+      "aggregation": "cohort_ratio",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "crm",
+          "fields": [
+            "lead_id",
+            "campaign_id",
+            "created_at",
+            "qualified_at",
+            "opportunity_id",
+            "opened_at",
+            "won_at",
+            "closed_at",
+            "value_cents",
+            "acquisition_operations_cost",
+            "new_acquired_customers"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "marketing_won_deals"
+      ],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_key_events",
+      "label": "Eventos clave GA4",
+      "names": {
+        "es": "Eventos clave GA4",
+        "en": "GA4 key events"
+      },
+      "contract": "marketing",
+      "pages": [
+        "conversions"
+      ],
+      "description": {
+        "es": "Eventos clave GA4. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "GA4 key events. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "SUM(analytics.key_events)",
+      "numerator": null,
+      "denominator": null,
+      "unit": "number",
+      "aggregation": "sum",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "analytics",
+          "fields": [
+            "date",
+            "user_id",
+            "first_seen",
+            "sessions",
+            "engaged_sessions",
+            "sessions_with_key_event",
+            "key_events",
+            "channel",
+            "device",
+            "country",
+            "content"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_conversion_rate",
+      "label": "Tasa de conversión publicitaria",
+      "names": {
+        "es": "Tasa de conversión publicitaria",
+        "en": "Ad conversion rate"
+      },
+      "contract": "marketing",
+      "pages": [
+        "conversions"
+      ],
+      "description": {
+        "es": "Tasa de conversión publicitaria. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Ad conversion rate. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "conversions / clicks × 100",
+      "numerator": "conversions",
+      "denominator": "clicks",
+      "unit": "percent",
+      "aggregation": "ratio",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "ads",
+          "fields": [
+            "date",
+            "campaign_id",
+            "platform",
+            "spend_cents",
+            "impressions",
+            "person_id",
+            "clicks",
+            "conversions",
+            "attributed_revenue_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "marketing_conversions",
+        "marketing_clicks"
+      ],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_cpa",
+      "label": "Costo por conversión publicitaria",
+      "names": {
+        "es": "Costo por conversión publicitaria",
+        "en": "Cost per ad conversion"
+      },
+      "contract": "marketing",
+      "pages": [
+        "conversions"
+      ],
+      "description": {
+        "es": "Costo por conversión publicitaria. Definición conceptual con datos sintéticos; no habilita LIVE. Inversión dividida entre conversiones publicitarias. El ID histórico cpa se conserva, con nombre corregido: no representa CAC.",
+        "en": "Cost per ad conversion. Conceptual definition with synthetic data; does not enable LIVE. Spend divided by ad conversions. The historical cpa ID is retained with a corrected label: this is not CAC."
+      },
+      "formula": "investment / conversions",
+      "numerator": "investment",
+      "denominator": "conversions",
+      "unit": "CRC",
+      "aggregation": "ratio",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "ads",
+          "fields": [
+            "date",
+            "campaign_id",
+            "platform",
+            "spend_cents",
+            "impressions",
+            "person_id",
+            "clicks",
+            "conversions",
+            "attributed_revenue_cents"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "marketing_investment",
+        "marketing_conversions"
+      ],
+      "version": "1.0.0",
+      "preferred": "down",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_assisted_conversions",
+      "label": "Conversiones asistidas",
+      "names": {
+        "es": "Conversiones asistidas",
+        "en": "Assisted conversions"
+      },
+      "contract": "marketing",
+      "pages": [
+        "conversions"
+      ],
+      "description": {
+        "es": "No disponible: el modelo DEMO de último contacto no define asistencia multicanal.",
+        "en": "Unavailable: the DEMO last-touch model does not define multi-channel assistance."
+      },
+      "formula": "NOT_AVAILABLE_WITH_LAST_TOUCH_MODEL",
+      "numerator": null,
+      "denominator": null,
+      "unit": "number",
+      "aggregation": "unavailable",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "ads",
+          "fields": [
+            "date",
+            "campaign_id",
+            "platform",
+            "spend_cents",
+            "impressions",
+            "person_id",
+            "clicks",
+            "conversions",
+            "attributed_revenue_cents"
+          ]
+        },
+        {
+          "source": "analytics",
+          "fields": [
+            "date",
+            "user_id",
+            "first_seen",
+            "sessions",
+            "engaged_sessions",
+            "sessions_with_key_event",
+            "key_events",
+            "channel",
+            "device",
+            "country",
+            "content"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "UNAVAILABLE",
+        "live": "UNVERIFIED"
+      },
+      "status": "PROPOSED",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_new_users",
+      "label": "Usuarios nuevos",
+      "names": {
+        "es": "Usuarios nuevos",
+        "en": "New users"
+      },
+      "contract": "marketing",
+      "pages": [
+        "audiences"
+      ],
+      "description": {
+        "es": "Usuarios nuevos. Definición conceptual con datos sintéticos; no habilita LIVE. Usuarios presentes en el intervalo cuyo first_seen es igual o posterior al inicio del intervalo; grupo disjunto de recurrentes.",
+        "en": "New users. Conceptual definition with synthetic data; does not enable LIVE. Users present in the interval whose first_seen is on or after interval start; disjoint from returning users."
+      },
+      "formula": "COUNT_DISTINCT(user_id WHERE first_seen >= period_start)",
+      "numerator": null,
+      "denominator": null,
+      "unit": "number",
+      "aggregation": "distinct",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "analytics",
+          "fields": [
+            "date",
+            "user_id",
+            "first_seen",
+            "sessions",
+            "engaged_sessions",
+            "sessions_with_key_event",
+            "key_events",
+            "channel",
+            "device",
+            "country",
+            "content"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_returning_users",
+      "label": "Usuarios recurrentes",
+      "names": {
+        "es": "Usuarios recurrentes",
+        "en": "Returning users"
+      },
+      "contract": "marketing",
+      "pages": [
+        "audiences"
+      ],
+      "description": {
+        "es": "Usuarios recurrentes. Definición conceptual con datos sintéticos; no habilita LIVE. Usuarios presentes con first_seen anterior al inicio del intervalo; un usuario no pertenece a ambos grupos en el mismo intervalo.",
+        "en": "Returning users. Conceptual definition with synthetic data; does not enable LIVE. Present users with first_seen before interval start; a user cannot belong to both groups in the same interval."
+      },
+      "formula": "COUNT_DISTINCT(user_id WHERE first_seen < period_start)",
+      "numerator": null,
+      "denominator": null,
+      "unit": "number",
+      "aggregation": "distinct",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "analytics",
+          "fields": [
+            "date",
+            "user_id",
+            "first_seen",
+            "sessions",
+            "engaged_sessions",
+            "sessions_with_key_event",
+            "key_events",
+            "channel",
+            "device",
+            "country",
+            "content"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_new_user_share",
+      "label": "Porcentaje de usuarios nuevos",
+      "names": {
+        "es": "Porcentaje de usuarios nuevos",
+        "en": "New user share"
+      },
+      "contract": "marketing",
+      "pages": [
+        "audiences"
+      ],
+      "description": {
+        "es": "Porcentaje de usuarios nuevos. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "New user share. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "new_users / users × 100",
+      "numerator": "new_users",
+      "denominator": "users",
+      "unit": "percent",
+      "aggregation": "distinct_ratio",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "analytics",
+          "fields": [
+            "date",
+            "user_id",
+            "first_seen",
+            "sessions",
+            "engaged_sessions",
+            "sessions_with_key_event",
+            "key_events",
+            "channel",
+            "device",
+            "country",
+            "content"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "marketing_new_users",
+        "marketing_users"
+      ],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_audience_engagement",
+      "label": "Interacción por audiencia",
+      "names": {
+        "es": "Interacción por audiencia",
+        "en": "Audience engagement"
+      },
+      "contract": "marketing",
+      "pages": [
+        "audiences"
+      ],
+      "description": {
+        "es": "Interacción por audiencia. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Audience engagement. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "engaged_sessions / sessions × 100",
+      "numerator": "engaged_sessions",
+      "denominator": "sessions",
+      "unit": "percent",
+      "aggregation": "ratio",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "analytics",
+          "fields": [
+            "date",
+            "user_id",
+            "first_seen",
+            "sessions",
+            "engaged_sessions",
+            "sessions_with_key_event",
+            "key_events",
+            "channel",
+            "device",
+            "country",
+            "content"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [
+        "marketing_engaged_sessions",
+        "marketing_sessions"
+      ],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_device_performance",
+      "label": "Rendimiento por dispositivo",
+      "names": {
+        "es": "Rendimiento por dispositivo",
+        "en": "Device performance"
+      },
+      "contract": "marketing",
+      "pages": [
+        "audiences"
+      ],
+      "description": {
+        "es": "Rendimiento por dispositivo. La tarjeta muestra el mayor grupo; el desglose conserva todos los grupos. Definición conceptual con datos sintéticos; no habilita LIVE. Mayor tasa de interacción recalculada entre dispositivos. Las visualizaciones mantienen todos los dispositivos, sin sumar porcentajes.",
+        "en": "Device performance. The card shows the leading group; breakdowns retain every group. Conceptual definition with synthetic data; does not enable LIVE. Highest recomputed engagement rate across devices. Visualizations retain all devices, without adding percentages."
+      },
+      "formula": "MAX(GROUP_RATIO(engaged_sessions, sessions, device)) × 100",
+      "numerator": null,
+      "denominator": null,
+      "unit": "percent",
+      "aggregation": "group_ratio",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "analytics",
+          "fields": [
+            "date",
+            "user_id",
+            "first_seen",
+            "sessions",
+            "engaged_sessions",
+            "sessions_with_key_event",
+            "key_events",
+            "channel",
+            "device",
+            "country",
+            "content"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_geography_users",
+      "label": "Usuarios del principal país",
+      "names": {
+        "es": "Usuarios del principal país",
+        "en": "Users in leading country"
+      },
+      "contract": "marketing",
+      "pages": [
+        "audiences"
+      ],
+      "description": {
+        "es": "Usuarios del principal país. La tarjeta muestra el mayor grupo; el desglose conserva todos los grupos. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Users in leading country. The card shows the leading group; breakdowns retain every group. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "MAX(GROUP_COUNT_DISTINCT(user_id, country))",
+      "numerator": null,
+      "denominator": null,
+      "unit": "number",
+      "aggregation": "group_distinct",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "analytics",
+          "fields": [
+            "date",
+            "user_id",
+            "first_seen",
+            "sessions",
+            "engaged_sessions",
+            "sessions_with_key_event",
+            "key_events",
+            "channel",
+            "device",
+            "country",
+            "content"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    },
+    {
+      "id": "marketing_content_sessions",
+      "label": "Sesiones del contenido principal",
+      "names": {
+        "es": "Sesiones del contenido principal",
+        "en": "Sessions for leading content"
+      },
+      "contract": "marketing",
+      "pages": [
+        "audiences"
+      ],
+      "description": {
+        "es": "Sesiones del contenido principal. La tarjeta muestra el mayor grupo; el desglose conserva todos los grupos. Definición conceptual con datos sintéticos; no habilita LIVE.",
+        "en": "Sessions for leading content. The card shows the leading group; breakdowns retain every group. Conceptual definition with synthetic data; does not enable LIVE."
+      },
+      "formula": "MAX(GROUP_SUM(sessions, content))",
+      "numerator": null,
+      "denominator": null,
+      "unit": "number",
+      "aggregation": "group_max",
+      "dimensions": [
+        "client",
+        "date",
+        "unit",
+        "platform",
+        "campaign",
+        "channel",
+        "source",
+        "device",
+        "country",
+        "audience",
+        "content"
+      ],
+      "requiredFields": [
+        {
+          "source": "analytics",
+          "fields": [
+            "date",
+            "user_id",
+            "first_seen",
+            "sessions",
+            "engaged_sessions",
+            "sessions_with_key_event",
+            "key_events",
+            "channel",
+            "device",
+            "country",
+            "content"
+          ]
+        }
+      ],
+      "verification": {
+        "definition": "PROPOSED",
+        "demo": "IMPLEMENTED",
+        "live": "UNVERIFIED"
+      },
+      "status": "DEMO_ONLY",
+      "dependencies": [],
+      "version": "1.0.0",
+      "preferred": "neutral",
+      "nullPolicy": {
+        "es": "Si falta el denominador o es cero, el resultado es null; no se sustituye por cero.",
+        "en": "A missing or zero denominator produces null; never replaced with zero."
+      },
+      "temporalScope": {
+        "es": "Fechas inclusivas UTC, cliente y unidades autorizados; ratios y distintos se recalculan por intervalo.",
+        "en": "Inclusive UTC dates, authorized client and units; ratios and distinct counts are recomputed per interval."
+      }
+    }
+  ]
+}
