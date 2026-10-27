@@ -1,0 +1,22 @@
+[
+  {
+    "path": "docs/Assets/Finanzas.png",
+    "sha256": "09d8f44dba61e2b743afbe8f8bde9529e698828279e068cc057abecfb21003da",
+    "bytes": 718254
+  },
+  {
+    "path": "docs/Assets/FinOps.png",
+    "sha256": "f291677f72c890d70c946cd53474773fdf3ce706a8927163f4de769c82a9f86a",
+    "bytes": 650747
+  },
+  {
+    "path": "docs/Assets/Marketing.png",
+    "sha256": "361f8f32cb0552bb9a5e9ca365a25a6ad07d12d4c0c41f9a938cfa2535114674",
+    "bytes": 662528
+  },
+  {
+    "path": "docs/Assets/Analytics-workflow.png",
+    "sha256": "a7a5d10a692d3bf3bc6e2205e26b85a0cddc46d14de6e23e2deee799f241fd63",
+    "bytes": 465332
+  }
+]

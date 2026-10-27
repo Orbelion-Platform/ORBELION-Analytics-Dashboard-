@@ -10,7 +10,35 @@ Finance, FinOps and Marketing share a consistent analytical experience while ret
 | FinOps | 32 metric definitions, 6 page definitions | Cloud cost allocation, budgets, resource telemetry and savings |
 | Marketing | 36 metric definitions, 6 page definitions | Acquisition cost, attribution, traffic and CRM cohorts |
 
-**111 metric definitions ? 18 page definitions ? deterministic fixtures ? zero external dependencies**
+**111 metric definitions | 18 page definitions | deterministic fixtures | zero external dependencies**
+
+## Dashboard evidence
+
+Original screenshots supplied for the portfolio. All three show the fictional Nebula Retail scenario in DEMO mode with synthetic CRC values. They document the product interface; the executable public sample remains the separate local report below.
+
+### Finance
+
+Net sales, cost of sales, gross profit and margin, with business-unit/date filters and category composition.
+
+![Finance dashboard in DEMO mode with synthetic CRC values](docs/Assets/Finanzas.png)
+
+### FinOps
+
+Cloud spend, budget, realized savings, budget variance and a synthetic spend forecast.
+
+![FinOps dashboard in DEMO mode with synthetic CRC values](docs/Assets/FinOps.png)
+
+### Marketing
+
+Advertising investment, attributed revenue, ROAS, conversions, leads and acquisition cost.
+
+![Marketing dashboard in DEMO mode with synthetic CRC values](docs/Assets/Marketing.png)
+
+## Architecture workflow
+
+The supplied ETL architecture places ORBELION Analytics Dashboard alongside Power BI as a consumption destination, following extraction, transformation and loading into Azure SQL or PostgreSQL. This image provides architectural context; it does not establish working connectors, deployed infrastructure or LIVE connectivity in this public sample.
+
+![ETL architecture showing source systems, processing, storage and analytics consumption](docs/Assets/Analytics-workflow.png)
 
 ## Explore locally
 
@@ -44,7 +72,7 @@ flowchart LR
 
 The private product uses React and TypeScript with modular workspaces and separate backend concerns. This package publishes selected synthetic JavaScript modules and catalogs plus an independent local report. Authentication, warehouse adapters, administration SQL and deployment configuration are excluded.
 
-[Engineering case study](docs/ENGINEERING_CASE_STUDY.md) ? [Evidence and limits](docs/EVIDENCE.md) ? [Publication boundary](docs/PUBLICATION.md)
+[Engineering case study](docs/ENGINEERING_CASE_STUDY.md) | [Evidence and limits](docs/EVIDENCE.md) | [Publication boundary](docs/PUBLICATION.md)
 
 ## Verification scope
 
